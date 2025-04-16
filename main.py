@@ -31,9 +31,11 @@ def power(a, b):
     return res
     
 
-print("CALCULADORA MUITO FODA DO PROFESSOR MATEUS COELHO 💋 <3\n"
-      "---------------------------------------------------\n"
-      "Digite o código da operação que deseja realizar:\n\n"
+print(
+      "-------------------------------------------------------------\n"
+      "|  CALCULADORA MUITO FODA DO PROFESSOR MATEUS COELHO 💋 <3  |\n"
+      "|                    Códigos da operações                   |\n"
+      "-------------------------------------------------------------\n\n"
       "Cod 1 - Soma     | Cod 2 - Sub\n"
       "Cod 3 - Mult     | Cod 4 - Div\n"
       "Cod 5 - Power    | Cod 6 - Root\n"
@@ -49,7 +51,7 @@ print("CALCULADORA MUITO FODA DO PROFESSOR MATEUS COELHO 💋 <3\n"
 cod = ""
 
 while(cod != '-1'):
-    cod = input('Escolha uma operação: ')
+    cod = input('Digite o código da operação que deseja realizar: ')
     
     if(cod != '-1'):
         a = float(input("Digite o valor do operante A: "))
