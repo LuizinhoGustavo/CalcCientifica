@@ -37,9 +37,8 @@ def root(a, b):
     if b < 0 and a % 2 == 0:
         raise ValueError("Não é possível calcular raiz par de número negativo.")
 
-    x = b / a  # chute inicial
+    x = b / a 
     for _ in range(i):
-        # calcula x^(a - 1)
         x_pot = 1
         for _ in range(int(a) - 1):
             x_pot *= x
@@ -49,9 +48,39 @@ def root(a, b):
 
     print(f'O resultado é {res:.8f}')
     return res
+
+def fat(a):
+    if a == 0:
+        return 1
+    res = 1
+    i = 1
+    while i <= a:
+        res *= i
+        i += 1
+    print(f'O resultado é {res:.8f}')
+    return res
+
+def ln(a):
+    i = 50
+    if a <= 0:
+        raise ValueError("x deve ser maior que 0")
+    
+    y = (a - 1) / (a + 1)
+    y2 = y * y
+    res = 0
+
+    for n in range(i):
+        b = (1 / (2 * n + 1)) * (y ** (2 * n + 1))
+        res += b
+
+    res *= 2
+
+    print(f'O resultado é {res:.8f}')
+    return res
+
     
 
-print(
+print(  
       "-------------------------------------------------------------\n"
       "|  CALCULADORA MUITO FODA DO PROFESSOR MATEUS COELHO 💋 <3  |\n"
       "|                    Códigos da operações                   |\n"
@@ -89,8 +118,10 @@ while(cod != '-1'):
             power(a, b)
         elif cod == "6":
             root(a, b)
-        # elif cod == "7":
-        # elif cod == "8":
+        elif cod == "7":
+            fat(a)
+        elif cod == "8":
+            ln(a)
         # elif cod == "9":
         # elif cod == "10":
         # elif cod == "11":

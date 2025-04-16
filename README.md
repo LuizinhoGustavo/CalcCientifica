@@ -29,6 +29,9 @@
 - Root - Cod 6 - Método de Newton
 - Fat - Cod 7
 - Ln - Cod 8
+  - Traz x para perto de 1 usando identidade: ln(x) = ln(a^b) = b \* ln(a)
+  - Aqui usamos mudança de base: x = a^k => ln(x) = k \* ln(a)
+  - Então aproximamos ln(x) pela identidade: ln(x) = 2 _ [ (x-1)/(x+1) + 1/3_((x-1)/(x+1))^3 + 1/5\*((x-1)/(x+1))^5 + ... ]
 - Log - Cod 9
 - Seno - Cod 10
 - Cosseno - Cod 11
