@@ -33,6 +33,7 @@
   - Aqui usamos mudança de base: x = a^k => ln(x) = k \* ln(a)
   - Então aproximamos ln(x) pela identidade: ln(x) = 2 _ [ (x-1)/(x+1) + 1/3_((x-1)/(x+1))^3 + 1/5\*((x-1)/(x+1))^5 + ... ]
 - Log - Cod 9
+  - Série de Taylor
 - Seno - Cod 10
 - Cosseno - Cod 11
 - Tan - Cod 12

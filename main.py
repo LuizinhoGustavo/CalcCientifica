@@ -2,32 +2,34 @@
 
 def soma(a, b):
     res = a + b
-    print(f'O resultado é {res:.8f}')
+
     return res
 
 def sub(a, b):
     res = a - b
-    print(f'O resultado é {res:.8f}')
+    
     return res
 
 def mult(a, b):
     res = a * b
-    print(f'O resultado é {res:.8f}')
+
     return res
 
 def div(a, b):
     res = a / b
-    print(f'O resultado é {res:.8f}')
+
     return res
 
 def power(a, b):
+    if (b == 0):
+        return 1
     i = 1
     res = a
     while i < b:
         print(res)
         res *= a
         i += 1
-    print(f'O resultado é {res:.8f}')
+
     return res
 
 def root(a, b):
@@ -46,7 +48,6 @@ def root(a, b):
         res = ((a - 1) * x + b / x_pot) / a
         x = res 
 
-    print(f'O resultado é {res:.8f}')
     return res
 
 def fat(a):
@@ -57,7 +58,7 @@ def fat(a):
     while i <= a:
         res *= i
         i += 1
-    print(f'O resultado é {res:.8f}')
+    
     return res
 
 def ln(a):
@@ -75,10 +76,16 @@ def ln(a):
 
     res *= 2
 
-    print(f'O resultado é {res:.8f}')
     return res
 
-    
+def log(a, b):
+    if a <= 0 or b <= 0 or b == 1:
+        raise ValueError("a deve ser > 0 e b deve ser > 0 e diferente de 1")
+    ln_a = ln(a)
+    ln_b = ln(b)
+    res = ln_a / ln_b
+
+    return res
 
 print(  
       "-------------------------------------------------------------\n"
@@ -97,32 +104,54 @@ print(
       "Cod 16 - STORE   | Cod 17 - Clear\n"
       "Cod -1 - Exit \n")
 
+# Variáveis
 cod = ""
+operacoesComUmOperante = ['7', '8', '10', '11', '12', '13', '14', '15']
 
 while(cod != '-1'):
     cod = input('Digite o código da operação que deseja realizar: ')
     
     if(cod != '-1'):
         a = float(input("Digite o valor do operante A: "))
-        b = float(input("Digite o valor do operante B: "))
+        if(cod not in operacoesComUmOperante):
+            b = float(input("Digite o valor do operante B: "))
         
         if cod == "1":
-            soma(a, b)
+            res = soma(a, b)
+            print(f'O resultado é {res:.8f}')
+
         elif cod == "2":
-            sub(a, b)
+            res = sub(a, b)
+            print(f'O resultado é {res:.8f}')
+
         elif cod == "3":
-            mult(a, b)
+            res = mult(a, b)
+            print(f'O resultado é {res:.8f}')
+
         elif cod == "4":
-            div(a, b)
+            res = div(a, b)
+            print(f'O resultado é {res:.8f}')
+
         elif cod == "5":
-            power(a, b)
+            res = power(a, b)
+            print(f'O resultado é {res:.8f}')
+
         elif cod == "6":
-            root(a, b)
+            res = root(a, b)
+            print(f'O resultado é {res:.8f}')
+
         elif cod == "7":
-            fat(a)
+            res = fat(a)
+            print(f'O resultado é {res:.8f}')
+
         elif cod == "8":
-            ln(a)
-        # elif cod == "9":
+            res = ln(a)
+            print(f'O resultado é {res:.8f}')
+
+        elif cod == "9":
+            res = log(a, b)
+            print(f'O resultado é {res:.8f}')
+
         # elif cod == "10":
         # elif cod == "11":
         # elif cod == "12":
