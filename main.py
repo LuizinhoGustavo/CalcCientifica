@@ -67,7 +67,6 @@ def ln(a):
         raise ValueError("x deve ser maior que 0")
     
     y = (a - 1) / (a + 1)
-    y2 = y * y
     res = 0
 
     for n in range(i):
@@ -85,6 +84,117 @@ def log(a, b):
     ln_b = ln(b)
     res = ln_a / ln_b
 
+    return res
+
+def seno(x):
+
+    x = (x * 3.14159265359) / 180
+
+    # Normaliza o valor de x entre -2π e 2π para melhor precisão
+    while x > 6.28318530718:  # 2 * pi
+        x -= 6.28318530718
+    while x < -6.28318530718:
+        x += 6.28318530718
+
+    termos = 10  # Quantidade de termos da série de Taylor
+    res = 0
+
+    for n in range(termos):
+        sinal = -1 if n % 2 else 1
+        numerador = x ** (2 * n + 1)
+        denominador = fat(2 * n + 1)
+        res += sinal * numerador / denominador
+
+    return res
+
+def cosseno(x):
+
+    x = (x * 3.14159265359) / 180
+
+    # Normaliza o valor de x entre -2π e 2π
+    while x > 6.28318530718:  # 2 * pi
+        x -= 6.28318530718
+    while x < -6.28318530718:
+        x += 6.28318530718
+
+    termos = 10  # Quantidade de termos da série de Taylor
+    res = 0
+
+    for n in range(termos):
+        sinal = -1 if n % 2 else 1
+        numerador = x ** (2 * n)
+        denominador = fat(2 * n)
+        res += sinal * numerador / denominador
+
+    return res
+
+def tan(x):
+    cos = cosseno(x)
+    if cosseno == 0:
+        raise ValueError("Tangente indefinida (cosseno igual a zero)")
+    
+    sen = seno(x)
+    res = sen / cos
+
+    return res
+
+def arcSen(x):
+
+    if x < -1 or x > 1:
+        raise ValueError("O domínio de arcsen é entre -1 e 1.")
+
+    termos = 10
+    res = 0
+    for n in range(termos):
+        # Cálculo do numerador: fatorial(2n)
+        num = fat(2 * n)
+
+        # Cálculo do denominador: (4^n) * (n!)^2 * (2n + 1)
+        pot_4 = 1
+        for _ in range(n):
+            pot_4 *= 4
+        
+        fat_n = fat(n)
+        den = pot_4 * fat_n * fat_n * (2 * n + 1)
+
+        # x^(2n + 1)
+        pot_x = 1
+        for _ in range(2 * n + 1):
+            pot_x *= x
+
+        res += (num * pot_x) / den
+
+    res = (res * 180) / 3.14159265359
+
+    return res
+
+def arcCos(x):
+    if x < -1 or x > 1:
+        raise ValueError("O domínio de arccos é entre -1 e 1.")
+    
+    res = 90 - arcSen(x)
+
+    return res
+
+def arcTan(x):
+    termos = 20  # mais termos para melhor precisão
+
+    if x > 1:
+        return 90 - arcTan(1 / x)
+    elif x < -1:
+        return -90 - arcTan(1 / x)
+
+    res = 0
+    for n in range(termos):
+        sinal = -1 if n % 2 else 1
+        pot_x = 1
+        for _ in range(2 * n + 1):
+            pot_x *= x
+
+        res += sinal * pot_x / (2 * n + 1)
+
+    # Converter radianos para graus
+    res = (res * 180) / 3.14159265359
     return res
 
 print(  
@@ -152,11 +262,29 @@ while(cod != '-1'):
             res = log(a, b)
             print(f'O resultado é {res:.8f}')
 
-        # elif cod == "10":
-        # elif cod == "11":
-        # elif cod == "12":
-        # elif cod == "13":
-        # elif cod == "14":
-        # elif cod == "15":
+        elif cod == "10":
+            res = seno(a)
+            print(f'O resultado é {res:.8f}')
+        
+        elif cod == "11":
+            res = cosseno(a)
+            print(f'O resultado é {res:.8f}')
+
+        elif cod == "12":
+            res = tan(a)
+            print(f'O resultado é {res:.8f}')
+
+        elif cod == "13":
+            res = arcSen(a)
+            print(f'O resultado é {res:.8f}')
+            
+        elif cod == "14":
+            res = arcCos(a)
+            print(f'O resultado é {res:.8f}')
+
+        elif cod == "15":
+            res = arcTan(a)
+            print(f'O resultado é {res:.8f}')
+            
         # elif cod == "16":
         # elif cod == "17":
