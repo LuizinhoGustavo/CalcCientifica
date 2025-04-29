@@ -288,3 +288,5 @@ while(cod != '-1'):
             
         # elif cod == "16":
         # elif cod == "17":
+
+print("Até a próxima 🤓☝️")
