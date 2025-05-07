@@ -1,3 +1,13 @@
+#Funções auxiliares
+def exp(x, termos=20):
+    res = 1
+    termo = 1
+    for i in range(1, termos):
+        termo *= x / i
+        res += termo
+    return res
+
+
 # Operações
 
 def soma(a, b):
@@ -16,50 +26,85 @@ def mult(a, b):
     return res
 
 def div(a, b):
+    if (b == 0):
+        return "Resultado indeterminado"
+    
+    if (a == 0 and b == 0):
+        return "Resultado indeterminado"
+    
     res = a / b
 
     return res
 
 def power(a, b):
-    if (b == 0):
+    if b == 0:
         return 1
-    i = 1
-    res = a
-    while i < b:
-        print(res)
-        res *= a
-        i += 1
-
-    return res
+    elif int(b) == b and b > 0:  # Expoente inteiro positivo
+        res = 1
+        for _ in range(int(b)):
+            res *= a
+        return res
+    elif int(b) == b and b < 0:  # Expoente inteiro negativo
+        res = 1
+        for _ in range(-int(b)):
+            res *= a
+        return 1 / res
+    elif a > 0:  # Expoente real (ex: 2^0.5)
+        return exp(b * ln(a))
+    else:
+        raise ValueError("Base negativa com expoente fracionário não suportada")
 
 def root(a, b):
-    i = 100
+    if int(a) != a or a == 0:
+        raise ValueError("Índice da raiz deve ser um inteiro diferente de zero")
+
+    negativo = False
+    if a < 0:
+        negativo = True
+        a = -a  # equivalente a abs(a), mas sem usar a função
+
+    a = int(a)
+
+    if b < 0 and a % 2 == 0:
+        raise ValueError("Não existe raiz real de número negativo com índice par")
+
     if b == 0:
         return 0
-    if b < 0 and a % 2 == 0:
-        raise ValueError("Não é possível calcular raiz par de número negativo.")
 
-    x = b / a 
-    for _ in range(i):
+    # Aproximação via Newton-Raphson
+    iteracoes = 100
+    x = b / a  # chute inicial
+
+    for _ in range(iteracoes):
         x_pot = 1
-        for _ in range(int(a) - 1):
+        for _ in range(a - 1):
             x_pot *= x
 
         res = ((a - 1) * x + b / x_pot) / a
-        x = res 
+        x = res
 
-    return res
+    return 1 / res if negativo else res
 
 def fat(a):
     if a == 0:
         return 1
+    
+    if a < 0:
+        raise ValueError("Não existe fatorial de número negativo")
+
+    if isinstance(a, float) and not a.is_integer():
+        raise ValueError("Fatorial só é definido para inteiros não negativos")
+
+    if a > 170:
+        raise OverflowError("Número muito grande para calcular o fatorial com precisão")
+
+    a = int(a)
     res = 1
-    i = 1
-    while i <= a:
+    for i in range(1, a + 1):
         res *= i
-        i += 1
     
     return res
+
 
 def ln(a):
     i = 50
@@ -70,12 +115,14 @@ def ln(a):
     res = 0
 
     for n in range(i):
-        b = (1 / (2 * n + 1)) * (y ** (2 * n + 1))
+        exp = 2 * n + 1
+        b = (1 / exp) * power(y, exp)
         res += b
 
     res *= 2
 
     return res
+ 
 
 def log(a, b):
     if a <= 0 or b <= 0 or b == 1:
@@ -87,25 +134,26 @@ def log(a, b):
     return res
 
 def seno(x):
+    # Converter graus para radianos
+    pi = 3.14159265359
+    x = (x * pi) / 180
 
-    x = (x * 3.14159265359) / 180
-
-    # Normaliza o valor de x entre -2π e 2π para melhor precisão
-    while x > 6.28318530718:  # 2 * pi
-        x -= 6.28318530718
-    while x < -6.28318530718:
-        x += 6.28318530718
+    # Normalizar o valor de x entre -2π e 2π para melhor precisão
+    while x > 2 * pi:
+        x -= 2 * pi
+    while x < -2 * pi:
+        x += 2 * pi
 
     termos = 10  # Quantidade de termos da série de Taylor
-    res = 0
+    resultado = 0
 
     for n in range(termos):
         sinal = -1 if n % 2 else 1
-        numerador = x ** (2 * n + 1)
+        numerador = power(x, 2 * n + 1)
         denominador = fat(2 * n + 1)
-        res += sinal * numerador / denominador
+        resultado += sinal * numerador / denominador
 
-    return res
+    return resultado
 
 def cosseno(x):
 
@@ -143,7 +191,7 @@ def arcSen(x):
     if x < -1 or x > 1:
         raise ValueError("O domínio de arcsen é entre -1 e 1.")
 
-    termos = 10
+    termos = 100
     res = 0
     for n in range(termos):
         # Cálculo do numerador: fatorial(2n)
@@ -168,7 +216,7 @@ def arcSen(x):
 
     return res
 
-def arcCos(x):
+def arcCos(x):      
     if x < -1 or x > 1:
         raise ValueError("O domínio de arccos é entre -1 e 1.")
     
@@ -197,22 +245,28 @@ def arcTan(x):
     res = (res * 180) / 3.14159265359
     return res
 
-print(  
-      "-------------------------------------------------------------\n"
-      "|  CALCULADORA MUITO FODA DO PROFESSOR MATEUS COELHO 💋 <3  |\n"
-      "|                    Códigos da operações                   |\n"
-      "-------------------------------------------------------------\n\n"
-      "Cod 1 - Soma     | Cod 2 - Sub\n"
-      "Cod 3 - Mult     | Cod 4 - Div\n"
-      "Cod 5 - Power    | Cod 6 - Root\n"
-      "Cod 7 - Fat      | Cod 8 - Ln\n"
-      "Cod 9 - Log      | Cod 10 - Seno\n"
-      "Cod 11 - Cosseno | Cod 12 - Tan\n"
-      "Cod 13 - ArcSen  | Cod 14 - Arccos\n"
-      "Cod 15 - Arctan  |\n"
-      "\n"
-      "Cod 16 - STORE   | Cod 17 - Clear\n"
-      "Cod -1 - Exit \n")
+print(
+    "╔═══════════════════════════════════════════════════════════╗\n"
+    "║           CALCULADORA CIENTÍFICA - UFABC - PI 💋 <3       ║\n"
+    "║                     CÓDIGOS DAS OPERAÇÕES                 ║\n"
+    "╠═══════════════════════════════════════════════════════════╣\n"
+    "║ Código | Operação               │ Código | Operação       ║\n"
+    "╠════════╪════════════════════════╪════════╪════════════════╣\n"
+    "║ 1      │ Soma                   │ 2      │ Subtração      ║\n"
+    "║ 3      │ Multiplicação          │ 4      │ Divisão        ║\n"
+    "║ 5      │ Potência               │ 6      │ Raiz           ║\n"
+    "║ 7      │ Fatorial               │ 8      │ Log. Natural   ║\n"
+    "║ 9      │ Logaritmo              │ 10     │ Seno           ║\n"
+    "║ 11     │ Cosseno                │ 12     │ Tangente       ║\n"
+    "║ 13     │ Arcoseno               │ 14     │ Arcocosseno    ║\n"
+    "║ 15     │ Arcotangente           │        │                ║\n"
+    "╠═══════════════════════════════════════════════════════════╣\n"
+    "║ 16     │ Armazenar              │ 17     │ Limpar         ║\n"
+    "╠═══════════════════════════════════════════════════════════╣\n"
+    "║ Código -1: Sair                                           ║\n"
+    "╚═══════════════════════════════════════════════════════════╝\n"
+)
+
 
 # Variáveis
 cod = ""
@@ -227,64 +281,79 @@ while(cod != '-1'):
             b = float(input("Digite o valor do operante B: "))
         
         if cod == "1":
-            res = soma(a, b)
-            print(f'O resultado é {res:.8f}')
+            print("Soma")
+            ans = soma(a, b)
+            print(f'O resultado é {ans:.8f}')
 
         elif cod == "2":
-            res = sub(a, b)
-            print(f'O resultado é {res:.8f}')
+            print("Subtração")
+            ans = sub(a, b)
+            print(f'O resultado é {ans:.8f}')
 
         elif cod == "3":
-            res = mult(a, b)
-            print(f'O resultado é {res:.8f}')
+            print("Multiplicação")
+            ans = mult(a, b)
+            print(f'O resultado é {ans:.8f}')
 
         elif cod == "4":
-            res = div(a, b)
-            print(f'O resultado é {res:.8f}')
+            print("Divisão")
+            ans = div(a, b)
+            print(f'O resultado é {ans:.8f}')
 
         elif cod == "5":
-            res = power(a, b)
-            print(f'O resultado é {res:.8f}')
+            print("Potência")
+            ans = power(a, b)
+            print(f'O resultado é {ans:.8f}')
 
         elif cod == "6":
-            res = root(a, b)
-            print(f'O resultado é {res:.8f}')
+            print("Raiz")
+            ans = root(a, b)
+            print(f'O resultado é {ans:.8f}')
 
         elif cod == "7":
-            res = fat(a)
-            print(f'O resultado é {res:.8f}')
+            print("Fatorial")
+            ans = fat(a)
+            print(f'O resultado é {ans:.8f}')
 
         elif cod == "8":
-            res = ln(a)
-            print(f'O resultado é {res:.8f}')
+            print("Logaritmo Natural")
+            ans = ln(a)
+            print(f'O resultado é {ans:.8f}')
 
         elif cod == "9":
-            res = log(a, b)
-            print(f'O resultado é {res:.8f}')
+            print("Logaritmo")
+            ans = log(a, b)
+            print(f'O resultado é {ans:.8f}')
 
         elif cod == "10":
-            res = seno(a)
-            print(f'O resultado é {res:.8f}')
+            print("Seno")
+            ans = seno(a)
+            print(f'O resultado é {ans:.8f}')
         
         elif cod == "11":
-            res = cosseno(a)
-            print(f'O resultado é {res:.8f}')
+            print("Cosseno")
+            ans = cosseno(a)
+            print(f'O resultado é {ans:.8f}')
 
         elif cod == "12":
-            res = tan(a)
-            print(f'O resultado é {res:.8f}')
+            print("Tangente")
+            ans = tan(a)
+            print(f'O resultado é {ans:.8f}')
 
         elif cod == "13":
-            res = arcSen(a)
-            print(f'O resultado é {res:.8f}')
+            print("Arcoseno")
+            ans = arcSen(a)
+            print(f'O resultado é {ans:.8f}')
             
         elif cod == "14":
-            res = arcCos(a)
-            print(f'O resultado é {res:.8f}')
+            print("Arccoseno")
+            ans = arcCos(a)
+            print(f'O resultado é {ans:.8f}')
 
         elif cod == "15":
-            res = arcTan(a)
-            print(f'O resultado é {res:.8f}')
+            print("Arctangente")
+            ans = arcTan(a)
+            print(f'O resultado é {ans:.8f}')
             
         # elif cod == "16":
         # elif cod == "17":

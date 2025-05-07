@@ -44,3 +44,9 @@
 - **Clear - Cod 17**
 
 - Exit - Cod -1
+
+# Casos de teste
+
+1. Números positivos
+2. Números negativos
+3. Números decimais
