@@ -7,7 +7,6 @@ def exp(x, termos=20):
         res += termo
     return res
 
-
 # Operações
 
 def soma(a, b):
@@ -27,10 +26,10 @@ def mult(a, b):
 
 def div(a, b):
     if (b == 0):
-        return "Resultado indeterminado"
+        return "Indeterminado - divisor igual a 0"
     
     if (a == 0 and b == 0):
-        return "Resultado indeterminado"
+        return "Indeterminado - divisor e dividendo igual a 0"
     
     res = a / b
 
@@ -52,21 +51,21 @@ def power(a, b):
     elif a > 0:  # Expoente real (ex: 2^0.5)
         return exp(b * ln(a))
     else:
-        raise ValueError("Base negativa com expoente fracionário não suportada")
+        return "Indeterminado - Base negativa com expoente fracionário não suportada"
 
 def root(a, b):
     if int(a) != a or a == 0:
-        raise ValueError("Índice da raiz deve ser um inteiro diferente de zero")
+        return "indeterminado - Índice da raiz deve ser um inteiro diferente de zero"
 
     negativo = False
     if a < 0:
         negativo = True
-        a = -a  # equivalente a abs(a), mas sem usar a função
+        a = -a
 
     a = int(a)
 
     if b < 0 and a % 2 == 0:
-        raise ValueError("Não existe raiz real de número negativo com índice par")
+        return "indeterminado - Não existe raiz real de número negativo com índice par"
 
     if b == 0:
         return 0
@@ -90,13 +89,13 @@ def fat(a):
         return 1
     
     if a < 0:
-        raise ValueError("Não existe fatorial de número negativo")
+        return "Indeterminado - Fatorial só é definido para inteiros não negativos"
 
     if isinstance(a, float) and not a.is_integer():
-        raise ValueError("Fatorial só é definido para inteiros não negativos")
+        return "Indeterminado - Fatorial só é definido para inteiros não negativos"
 
     if a > 170:
-        raise OverflowError("Número muito grande para calcular o fatorial com precisão")
+        return "Número muito grande para calcular o fatorial com precisão"
 
     a = int(a)
     res = 1
@@ -109,7 +108,7 @@ def fat(a):
 def ln(a):
     i = 50
     if a <= 0:
-        raise ValueError("x deve ser maior que 0")
+        return "x deve ser maior que 0"
     
     y = (a - 1) / (a + 1)
     res = 0
@@ -126,7 +125,7 @@ def ln(a):
 
 def log(a, b):
     if a <= 0 or b <= 0 or b == 1:
-        raise ValueError("a deve ser > 0 e b deve ser > 0 e diferente de 1")
+        return "Indetermiando - a deve ser > 0 e b deve ser > 0 e diferente de 1"
     ln_a = ln(a)
     ln_b = ln(b)
     res = ln_a / ln_b
@@ -179,7 +178,7 @@ def cosseno(x):
 def tan(x):
     cos = cosseno(x)
     if cosseno == 0:
-        raise ValueError("Tangente indefinida (cosseno igual a zero)")
+        return "Indetermiando - Tangente indefinida (cosseno igual a zero)"
     
     sen = seno(x)
     res = sen / cos
@@ -189,12 +188,11 @@ def tan(x):
 def arcSen(x):
 
     if x < -1 or x > 1:
-        raise ValueError("O domínio de arcsen é entre -1 e 1.")
+        return "Indetermiando - O domínio de arcsen é entre -1 e 1."
 
     termos = 100
     res = 0
     for n in range(termos):
-        # Cálculo do numerador: fatorial(2n)
         num = fat(2 * n)
 
         # Cálculo do denominador: (4^n) * (n!)^2 * (2n + 1)
@@ -218,7 +216,7 @@ def arcSen(x):
 
 def arcCos(x):      
     if x < -1 or x > 1:
-        raise ValueError("O domínio de arccos é entre -1 e 1.")
+        return "Indetermiando - O domínio de arccos é entre -1 e 1."
     
     res = 90 - arcSen(x)
 
@@ -262,100 +260,110 @@ print(
     "║ 15     │ Arcotangente           │        │                ║\n"
     "╠═══════════════════════════════════════════════════════════╣\n"
     "║ 16     │ Armazenar              │ 17     │ Limpar         ║\n"
-    "╠═══════════════════════════════════════════════════════════╣\n"
+    "║ 18     │ Visualizar             │                         ║\n"   "╠═══════════════════════════════════════════════════════════╣\n"
     "║ Código -1: Sair                                           ║\n"
     "╚═══════════════════════════════════════════════════════════╝\n"
 )
 
-
 # Variáveis
 cod = ""
 operacoesComUmOperante = ['7', '8', '10', '11', '12', '13', '14', '15']
+operacoesEspeciais = ['16', '17', '18']
+
+armazenamento = [0, 0, 0, 0, 0, 0, 0, 0]
+ans = 0
 
 while(cod != '-1'):
-    cod = input('Digite o código da operação que deseja realizar: ')
+    cod = input('\nDigite o código da operação que deseja realizar: ')
     
     if(cod != '-1'):
-        a = float(input("Digite o valor do operante A: "))
-        if(cod not in operacoesComUmOperante):
-            b = float(input("Digite o valor do operante B: "))
+        if (int(cod) in range(1, 19)):
+            if (cod not in operacoesEspeciais):
+                a = input("Digite o valor do operante A: ")
+                if (a[0] == "M"):
+                    a = armazenamento[int(a[1]) - 1]
+                else:
+                    a = float(a)
+
+                if(cod not in operacoesComUmOperante):
+                    b = input("Digite o valor do operante B: ")
+                    if (b[0] == "M"):
+                        b = armazenamento[int(b[1]) - 1]
+                    else:
+                        b = float(b)
         
-        if cod == "1":
-            print("Soma")
-            ans = soma(a, b)
-            print(f'O resultado é {ans:.8f}')
+            if cod == "1":
+                ans = soma(a, b)
 
-        elif cod == "2":
-            print("Subtração")
-            ans = sub(a, b)
-            print(f'O resultado é {ans:.8f}')
+            elif cod == "2":
+                ans = sub(a, b)
 
-        elif cod == "3":
-            print("Multiplicação")
-            ans = mult(a, b)
-            print(f'O resultado é {ans:.8f}')
+            elif cod == "3":
+                ans = mult(a, b)
 
-        elif cod == "4":
-            print("Divisão")
-            ans = div(a, b)
-            print(f'O resultado é {ans:.8f}')
+            elif cod == "4":
+                ans = div(a, b)
 
-        elif cod == "5":
-            print("Potência")
-            ans = power(a, b)
-            print(f'O resultado é {ans:.8f}')
+            elif cod == "5":
+                ans = power(a, b)
 
-        elif cod == "6":
-            print("Raiz")
-            ans = root(a, b)
-            print(f'O resultado é {ans:.8f}')
+            elif cod == "6":
+                ans = root(a, b)
 
-        elif cod == "7":
-            print("Fatorial")
-            ans = fat(a)
-            print(f'O resultado é {ans:.8f}')
+            elif cod == "7":
+                ans = fat(a)
 
-        elif cod == "8":
-            print("Logaritmo Natural")
-            ans = ln(a)
-            print(f'O resultado é {ans:.8f}')
+            elif cod == "8":
+                ans = ln(a)
 
-        elif cod == "9":
-            print("Logaritmo")
-            ans = log(a, b)
-            print(f'O resultado é {ans:.8f}')
+            elif cod == "9":
+                ans = log(a, b)
 
-        elif cod == "10":
-            print("Seno")
-            ans = seno(a)
-            print(f'O resultado é {ans:.8f}')
+            elif cod == "10":
+                ans = seno(a)
+            
+            elif cod == "11":
+                ans = cosseno(a)
+
+            elif cod == "12":
+                ans = tan(a)
+
+            elif cod == "13":
+                ans = arcSen(a)
+                
+            elif cod == "14":
+                ans = arcCos(a)
+
+            elif cod == "15":
+                ans = arcTan(a)
+
+            elif cod == "16":
+                posicao = int(input(f"Qual posição deseja armazenar a última resposta ({ans:.8f}): "))
+
+                if (posicao < 1 or posicao > 8):
+                    print(f"A posição {posicao} é inválida, escolha um espaço de 1 à 8")
+                else:
+                    posicao -= 1
+                    armazenamento[posicao] = ans
+                    print(f"A resposta {ans:.8f} foi armazenada na posição M{posicao + 1}")
+
+            elif cod == "17":
+                posicao = int(input(f"Qual posição deseja limpar do armazenamento:"))
+                posicao -= 1
+                armazenamento[posicao] = 0
+
+            elif cod == "18":
+                print(f"Armazenamento: {armazenamento}")
+
+            if(cod not in operacoesEspeciais):
+                if isinstance(ans, str):
+                        print(ans)
+                else:
+                    print(f'O resultado é {ans:.8f}')
+        else:
+            print("Digite um código válido.")
+            
+
         
-        elif cod == "11":
-            print("Cosseno")
-            ans = cosseno(a)
-            print(f'O resultado é {ans:.8f}')
-
-        elif cod == "12":
-            print("Tangente")
-            ans = tan(a)
-            print(f'O resultado é {ans:.8f}')
-
-        elif cod == "13":
-            print("Arcoseno")
-            ans = arcSen(a)
-            print(f'O resultado é {ans:.8f}')
-            
-        elif cod == "14":
-            print("Arccoseno")
-            ans = arcCos(a)
-            print(f'O resultado é {ans:.8f}')
-
-        elif cod == "15":
-            print("Arctangente")
-            ans = arcTan(a)
-            print(f'O resultado é {ans:.8f}')
-            
-        # elif cod == "16":
-        # elif cod == "17":
 
 print("Até a próxima 🤓☝️")
