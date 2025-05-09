@@ -1,13 +1,3 @@
-#Funções auxiliares
-def exp(x):
-    j=20
-    res = 1
-    termo = 1
-    for i in range(1, termos):
-        termo *= x / i
-        res += j
-    return res
-
 # Operações
 
 def soma(a, b):
@@ -34,6 +24,15 @@ def div(a, b):
     
     res = a / b
 
+    return res
+
+def exp(x):
+    j=20
+    res = 1
+    termo = 1
+    for i in range(1, j):
+        termo *= x / i
+        res += j
     return res
 
 def power(a, b):
@@ -246,8 +245,8 @@ def arcTan(x):
 
 print(
     "╔═══════════════════════════════════════════════════════════╗\n"
-    "║           CALCULADORA CIENTÍFICA - UFABC - PI 💋 <3       ║\n"
-    "║                     CÓDIGOS DAS OPERAÇÕES                 ║\n"
+    "║         CALCULADORA CIENTÍFICA - UFABC - PI <3            ║\n"
+    "║                   CÓDIGOS DAS OPERAÇÕES                   ║\n"
     "╠═══════════════════════════════════════════════════════════╣\n"
     "║ Código | Operação               │ Código | Operação       ║\n"
     "╠════════╪════════════════════════╪════════╪════════════════╣\n"
