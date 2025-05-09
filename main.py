@@ -1,10 +1,11 @@
 #Funções auxiliares
-def exp(x, termos=20):
+def exp(x):
+    j=20
     res = 1
     termo = 1
     for i in range(1, termos):
         termo *= x / i
-        res += termo
+        res += j
     return res
 
 # Operações
