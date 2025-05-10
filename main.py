@@ -38,17 +38,17 @@ def exp(x):
 def power(a, b):
     if b == 0:
         return 1
-    elif int(b) == b and b > 0:  # Expoente inteiro positivo
+    elif int(b) == b and b > 0:
         res = 1
         for _ in range(int(b)):
             res *= a
         return res
-    elif int(b) == b and b < 0:  # Expoente inteiro negativo
+    elif int(b) == b and b < 0:
         res = 1
         for _ in range(-int(b)):
             res *= a
         return 1 / res
-    elif a > 0:  # Expoente real (ex: 2^0.5)
+    elif a > 0:
         return exp(b * ln(a))
     else:
         return "Indeterminado - Base negativa com expoente fracionário não suportada"
@@ -70,11 +70,10 @@ def root(a, b):
     if b == 0:
         return 0
 
-    # Aproximação via Newton-Raphson
-    iteracoes = 100
-    x = b / a  # chute inicial
+    i = 100
+    x = b / a
 
-    for _ in range(iteracoes):
+    for _ in range(i):
         x_pot = 1
         for _ in range(a - 1):
             x_pot *= x
@@ -106,7 +105,7 @@ def fat(a):
 
 
 def ln(a):
-    i = 50
+    i = 100
     if a <= 0:
         return "x deve ser maior que 0"
     
@@ -133,20 +132,18 @@ def log(a, b):
     return res
 
 def seno(x):
-    # Converter graus para radianos
     pi = 3.14159265359
     x = (x * pi) / 180
 
-    # Normalizar o valor de x entre -2π e 2π para melhor precisão
     while x > 2 * pi:
         x -= 2 * pi
     while x < -2 * pi:
         x += 2 * pi
 
-    termos = 10  # Quantidade de termos da série de Taylor
+    i = 10
     resultado = 0
 
-    for n in range(termos):
+    for n in range(i):
         sinal = -1 if n % 2 else 1
         numerador = power(x, 2 * n + 1)
         denominador = fat(2 * n + 1)
@@ -155,19 +152,18 @@ def seno(x):
     return resultado
 
 def cosseno(x):
+    pi = 3.14159265359
+    x = (x * pi) / 180
 
-    x = (x * 3.14159265359) / 180
-
-    # Normaliza o valor de x entre -2π e 2π
     while x > 6.28318530718:  # 2 * pi
         x -= 6.28318530718
     while x < -6.28318530718:
         x += 6.28318530718
 
-    termos = 10  # Quantidade de termos da série de Taylor
+    i = 10
     res = 0
 
-    for n in range(termos):
+    for n in range(i):
         sinal = -1 if n % 2 else 1
         numerador = x ** (2 * n)
         denominador = fat(2 * n)
@@ -190,12 +186,11 @@ def arcSen(x):
     if x < -1 or x > 1:
         return "Indetermiando - O domínio de arcsen é entre -1 e 1."
 
-    termos = 100
+    i = 20
     res = 0
-    for n in range(termos):
+    for n in range(i):
         num = fat(2 * n)
 
-        # Cálculo do denominador: (4^n) * (n!)^2 * (2n + 1)
         pot_4 = 1
         for _ in range(n):
             pot_4 *= 4
@@ -203,7 +198,6 @@ def arcSen(x):
         fat_n = fat(n)
         den = pot_4 * fat_n * fat_n * (2 * n + 1)
 
-        # x^(2n + 1)
         pot_x = 1
         for _ in range(2 * n + 1):
             pot_x *= x
@@ -223,7 +217,7 @@ def arcCos(x):
     return res
 
 def arcTan(x):
-    termos = 20  # mais termos para melhor precisão
+    i = 100
 
     if x > 1:
         return 90 - arcTan(1 / x)
@@ -231,7 +225,7 @@ def arcTan(x):
         return -90 - arcTan(1 / x)
 
     res = 0
-    for n in range(termos):
+    for n in range(i):
         sinal = -1 if n % 2 else 1
         pot_x = 1
         for _ in range(2 * n + 1):
@@ -239,7 +233,6 @@ def arcTan(x):
 
         res += sinal * pot_x / (2 * n + 1)
 
-    # Converter radianos para graus
     res = (res * 180) / 3.14159265359
     return res
 
@@ -260,7 +253,8 @@ print(
     "║ 15     │ Arcotangente           │        │                ║\n"
     "╠═══════════════════════════════════════════════════════════╣\n"
     "║ 16     │ Armazenar              │ 17     │ Limpar         ║\n"
-    "║ 18     │ Visualizar             │                         ║\n"   "╠═══════════════════════════════════════════════════════════╣\n"
+    "║ 18     │ Visualizar             │                         ║\n"   
+    "╠═══════════════════════════════════════════════════════════╣\n"
     "║ Código -1: Sair                                           ║\n"
     "╚═══════════════════════════════════════════════════════════╝\n"
 )
@@ -349,6 +343,7 @@ while(cod != '-1'):
 
             elif cod == "17":
                 posicao = int(input(f"Qual posição deseja limpar do armazenamento:"))
+                print(f'Posição M{posicao} limpa com sucesso!')
                 posicao -= 1
                 armazenamento[posicao] = 0
 
@@ -362,8 +357,5 @@ while(cod != '-1'):
                     print(f'O resultado é {ans:.8f}')
         else:
             print("Digite um código válido.")
-            
-
-        
 
 print("Até a próxima 🤓☝️")
